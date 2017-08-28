@@ -11,12 +11,14 @@ class Records {
 	constructor(){
 		this.total_Record = 0;
 	this.page_Size  = 10;
+	this.sendItems=0;
 	this.page_Count = 0;
     this.start_Page      = 0;
 	this.current_Page = 1;
 	this.limit_all_records=50;
 	this.next_url="";
 	this.updateData=new Array();
+	this.records=0;
 	}
 
 	updateRecords(record){
@@ -92,7 +94,66 @@ class Records {
   		name: "keyvaluepairs"
 		});*/
 
-		cb(null,{"status":true,"total_Record":this.total_Record,"results":this.updateData});
+		var urlNext="https://pardeep-start.herokuapp.com";
+
+		this.records=this.total_Record;
+
+		var page=req.query.page;
+
+		console.log("page no :"+page);
+
+		if(page>1 && page<5){
+			var pageno=parseInt(page);
+			console.log(pageno);
+
+			page++;
+			console.log(page);
+			
+			if(req.query.sort){
+				cb(null,{"status":true,"total_Record":50,"next":"$("+urlNext+"/characters"+"?sort="+req.query.sort+"&page="+page+")","results":this.updateData.slice((pageno*10)-9,pageno*10)});
+			
+			}
+			else{
+				cb(null,{"status":true,"total_Record":50,"next":urlNext+"/characters"+"?page="+page,"results":this.updateData.slice((pageno*10)-9,pageno*10)});
+				
+			}
+	
+
+		}
+		else if(page==5){
+			var pageno=parseInt(page);
+			console.log(pageno);
+
+			cb(null,{"status":true,"total_Record":50,"next":null,"results":this.updateData.slice((pageno*10)-9,pageno*10)});
+	
+		}
+
+		
+
+		else if(page>5){
+
+			
+			cb(null,{"status":false,"result":"Invalid Page"});
+		}
+		else if(page=="undefined" ||page==null){
+			if(req.query.sort){
+				this.sendItems=10;
+				cb(null,{"status":true,"total_Record":50,"next":urlNext+"/characters"+"?sort="+req.query.sort+"&page=2","results":this.updateData.slice(0,10)});	
+	
+			}
+			else{
+				this.sendItems=10;
+				cb(null,{"status":true,"total_Record":50,"next":urlNext+"/characters"+"?page=2","results":this.updateData.slice(0,10)});	
+	
+				}
+			}
+			
+
+
+
+
+
+		
 
 		
 	}
