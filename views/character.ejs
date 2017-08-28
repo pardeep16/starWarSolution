@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Characters</title>
+</head>
+<body>
+<!-- <h3><%= result.status %></h3> -->
+
+<div>
+	
+
+
+<% if (result.status) { 
+<!-- Do something with more than 1 recipe -->
+%>
+<h2>Result Found <%= result.data.length %></h2>
+	<% for(var i=0 ;i< result.data.length;i++ ){ %>
+		<table>
+			<th><%= result.data[i].name %> </th>
+			<tr>
+			<td>Height <%= result.data[i].height %></td>
+			</tr>
+			<tr>
+				<td>Mass <%= result.data[i].mass %> </td>
+			</tr>
+			<u></u>
+		</table>
+	
+	<% } %>
+
+
+<%
+}
+ else{ 
+ } %>
+</div>
+</body>
+</html>

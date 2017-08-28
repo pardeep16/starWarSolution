@@ -47,7 +47,7 @@ class Records {
 			
 		}
 		else{
-			console.log(query.toLowerCase().toString());
+			//console.log(query.toLowerCase().toString());
 		switch(query.toLowerCase().toString()){
 			case "name":
 				this.updateData.sort(function(a,b){
@@ -109,6 +109,8 @@ class Planets {
 
 		this.planetWithCharData=new Array();
 		this.residents=new Array();
+		this.numb=0;
+		this.urls=new Array();
 	}
 
 	updateCharData(data){
@@ -125,6 +127,14 @@ class Planets {
 		return this.nextUrl;
 	}
 
+	getNumber(){
+		return this.numb;
+	}
+
+	updateNumber(){
+		this.numb=this.numb+1;
+	}
+
 	response(req,cb){
 		//cb(null,{"ststus":true,"toatal_records":this.totatRecord,"results":this.planetResData})
 	
@@ -134,17 +144,71 @@ class Planets {
 				"residents":this.planetResData[i].residents
 			});
 		}
-		cb(null,{"status":true,"total_records":this.totatRecord,"result":this.planetWithCharData});
+		//cb(null,{"status":true,"total_records":this.totatRecord,"result":this.planetWithCharData});
 
+		/*for(var ii=0;ii< this.planetWithCharData.length;ii++){
+			this.urls.push({
+				ii:this.planetWithCharData.residents[ii]
+			});
+		}*/
+		//this._callback(cb);
 
+		this.numb=0;
+
+		/*function execc(data,numb,cb){
+
+		if((numb)<data.length){
+
+		});
 		
+		}
+		else{
+			console.log("end");
+		}*/
+		function exec(data,numb,len,cb){
+			callback(data[numb].residents,numb,function(err,result){
+				//console.log(numb);
+				if(err){
+					cb(data);
+				}
+				else{
+					
+						data[numb].residents=result;
+					if(numb+1 <len){
+				//console.log(numb);
+				setTimeout(function() {
+          			exec(data,numb + 1,len,cb)
+       			 }, 1000);
+			}
+			else{
+			//	console.log(data);
+				cb(data);
+			}
+				}
+
+			});
+
+			
+		}
+		if(this.planetWithCharData.length>5){
+			exec(this.planetWithCharData,this.getNumber(),5,function(ress){
+				//console.log(ress);
+				//console.log(this.getTotalRecords());
+				cb(null,{"status":true,"total_records":5,"result":ress.slice(0,5)});
+			});
+		}
+		else{
+			exec(this.planetWithCharData,this.getNumber(),this.planetWithCharData.length,function(ress){
+				cb(null,{"status":true,"total_records":ress.length,"result":ress});
+			});
+		}
+	
 
 
 	}
 
 	
-
-
+	
 	/*this.getName(,function(err,res){
 					if(err){
 
@@ -165,6 +229,49 @@ class Planets {
 		});
 	}
 }
+
+
+function callback(urls,i,cb){
+		console.log(urls);
+		var url;
+		var len=urls.length;
+		var names=new Array();
+
+		function execRequest(idx) {
+    		url = urls[idx];
+    		console.log("executing execRequest()... url:", url);
+    		// exec http request
+    		request.get(url, function(error, response, body) {
+      			if (!error && response.statusCode == 200) {
+       				 console.log("  url:", url, "statusCode:", response.statusCode);
+       				 var data=JSON.parse(response.body);
+       				 names.push(data.name);
+       			//	 console.log(data.name);
+     			 } else if (error) {
+        			//	console.log("  error.code:", error.code);
+      			}
+      			else if (body) {
+      				console.log(i+" " +body.name);
+      			}
+      // sleep or return
+      			if (idx + 1 < len) {
+       			//	 console.log("  execute execRequest() after 1000ms...");
+        // execute the recursive function "execRequest()" after 1000 ms
+        			setTimeout(function() {
+          			execRequest(idx + 1)
+       			 }, 1000);
+      			} else {
+      			//	console.log("return");
+        		cb(null,names);
+      			}
+    		});
+  		}
+
+  // fire the recursive function "execRequest()"
+  		execRequest(0);
+
+	}
+
 
 
 
@@ -383,7 +490,7 @@ var getCharactersFromStarWar=function(req,url,query,cb){
 function getExtraData(recordd,cb){
 	var next=recordd.getNextUrl();
 
-	console.log("next url :"+next);
+	//console.log("next url :"+next);
 
 	if(next!=null){
 		requestCharApi(next,function(err,resp){
@@ -394,11 +501,11 @@ function getExtraData(recordd,cb){
 		else{
 			parseDataCharactters(resp,function(err,result){
 				if(err){
-					console.log("parse err"+err);
+				//	console.log("parse err"+err);
 					return null;
 				}
 				else{
-					console.log("parse :"+result);
+				//	console.log("parse :"+result);
 					return result;
 
 				}

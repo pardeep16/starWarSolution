@@ -12,7 +12,11 @@ var searchCharacter=function(req,res,next){
 				res.send(err);
 			}
 			else{
-				res.send(result);
+		//res.send(result);
+//
+				res.render('character',{
+					"result":result
+				});
 			}	
 		});
 	}
