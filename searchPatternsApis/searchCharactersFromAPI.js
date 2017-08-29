@@ -233,7 +233,7 @@ class Planets {
 			var pageno=parseInt(page);
 			if(pageno >1 && pageno<=4){
 				var data=this.planetWithCharData;
-				exec(data,5*(pageno-1),pageno*5,function(ress){
+				exec(this.planetResData,data,5*(pageno-1),pageno*5,function(ress){
 				//console.log(ress);
 				//console.log(this.getTotalRecords());
 				cb(null,{"status":true,"total_records":20,"total_pages":4,"result":ress.slice(5*(pageno-1),pageno*5)});
@@ -248,31 +248,34 @@ class Planets {
 		}
 		else{
 			var data=this.planetWithCharData;
-				exec(data,0,5,function(ress){
+				exec(this.planetResData,data,0,5,function(ress){
 				//console.log(ress);
 				//console.log(this.getTotalRecords());
 				cb(null,{"status":true,"total_records":20,"total_pages":"4","result":ress.slice(0,5)});
 			});
 		}
 
-		function exec(data,numb,len,cb){
-			callback(data[numb].residents,numb,function(err,result){
+		function exec(orgdata,data,numb,len,cb){
+			var executedata=new Array();
+			executedata=data;
+			console.log(numb+" "+len);
+			callback(orgdata[numb].residents,numb,function(err,result){
 				//console.log(numb);
 				if(err){
-					cb(data);
+					cb(executedata);
 				}
 				else{
-					
-						data[numb].residents=result;
+
+						executedata[numb].residents=result;
 					if(numb+1 <len){
 				//console.log(numb);
 				setTimeout(function() {
-          			exec(data,numb + 1,len,cb)
+          			exec(orgdata,data,numb + 1,len,cb)
        			 }, 1000);
 			}
 			else{
 			//	console.log(data);
-				cb(data);
+				cb(executedata);
 			}
 				}
 
