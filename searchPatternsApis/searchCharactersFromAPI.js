@@ -440,6 +440,7 @@ function getResponseFromAPI(pattern,data,cb){
 	else{
 		/*cb("No Result found",null);*/
 		//console.log(jsonData);
+		try{
 		var nextUrl=jsonData.next.toString();
 		//console.log("next url :"+nextUrl);
 		if(nextUrl!=null){
@@ -447,7 +448,7 @@ function getResponseFromAPI(pattern,data,cb){
 			
 			requestCharApi(nextUrl,function(err,result){
 				if(err){
-					cb(null,matchNames);
+							cb(null,matchNames);
 				}
 				else{
 					getResponseFromAPI(pattern,result,cb);
@@ -457,6 +458,11 @@ function getResponseFromAPI(pattern,data,cb){
 		else{
 			cb(null,matchNames);
 		}
+
+	}
+	catch(error){
+		cb(null,matchNames);
+	}
 	}
 	
 }
