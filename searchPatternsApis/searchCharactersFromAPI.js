@@ -268,7 +268,7 @@ class Planets {
 				//console.log(numb);
 				setTimeout(function() {
           			exec(data,numb + 1,len,cb)
-       			 }, 500);
+       			 }, 1000);
 			}
 			else{
 			//	console.log(data);
@@ -341,7 +341,7 @@ function callback(urls,i,cb){
         			//	console.log("  error.code:", error.code);
       			}
       			else if (body) {
-      		//		console.log(i+" " +body.name);
+      				console.log(i+" " +body.name);
       			}
       // sleep or return
       			if (idx + 1 < len) {
@@ -349,7 +349,7 @@ function callback(urls,i,cb){
         // execute the recursive function "execRequest()" after 1000 ms
         			setTimeout(function() {
           			execRequest(idx + 1)
-       			 }, 500);
+       			 }, 1000);
       			} else {
       			//	console.log("return");
         		cb(null,names);
