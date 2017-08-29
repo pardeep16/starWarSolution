@@ -447,7 +447,7 @@ function getResponseFromAPI(pattern,data,cb){
 			var nextUrl=jsonData.next.toString();
 			requestCharApi(nextUrl,function(err,result){
 				if(err){
-					cb(err,null);
+					return null;
 				}
 				else{
 					getResponseFromAPI(pattern,result,cb);
@@ -455,7 +455,7 @@ function getResponseFromAPI(pattern,data,cb){
 			});
 		}
 		else{
-			cb("err",null);
+			return null;
 		}
 	}
 	
