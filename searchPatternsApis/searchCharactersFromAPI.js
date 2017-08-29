@@ -346,7 +346,7 @@ var findPossiblePatterns=function(query,cb){
 	var pattern=query.toLowerCase().trim();
 	findPattern(pattern,function(err,result){
 		if(err){
-			cb(null,{"status":false,"data":[]});
+			cb({"status":false,"data":[]},null);
 			
 		}
 		else{
@@ -440,14 +440,14 @@ function getResponseFromAPI(pattern,data,cb){
 	else{
 		/*cb("No Result found",null);*/
 		//console.log(jsonData);
-		
+		var nextUrl=jsonData.next.toString();
 		//console.log("next url :"+nextUrl);
 		if(nextUrl!=null){
 			//console.log("Next Url:"+jsonData.next);
-			var nextUrl=jsonData.next.toString();
+			
 			requestCharApi(nextUrl,function(err,result){
 				if(err){
-					return null;
+					cb(null,matchNames);
 				}
 				else{
 					getResponseFromAPI(pattern,result,cb);
@@ -455,7 +455,7 @@ function getResponseFromAPI(pattern,data,cb){
 			});
 		}
 		else{
-			return null;
+			cb(null,matchNames);
 		}
 	}
 	
