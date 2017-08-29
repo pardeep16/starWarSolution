@@ -226,6 +226,35 @@ class Planets {
 		else{
 			console.log("end");
 		}*/
+
+
+		var page=req.query.page;
+		if(page){
+			var pageno=parseInt(page);
+			if(pageno >1 && pageno<=4){
+				var data=this.planetWithCharData;
+				exec(data,5*(pageno-1),pageno*5,function(ress){
+				//console.log(ress);
+				//console.log(this.getTotalRecords());
+				cb(null,{"status":true,"total_records":20,"total_pages":4,"result":ress.slice(5*(pageno-1),pageno*5)});
+			});
+			}
+			else{
+				var data=this.planetWithCharData;
+				//exec(data,0,0,function(ress){
+				cb(null,{"status":true,"total_records":0,"result":[],"message":"Invalid Page"});
+		//	});
+			}	
+		}
+		else{
+			var data=this.planetWithCharData;
+				exec(data,0,5,function(ress){
+				//console.log(ress);
+				//console.log(this.getTotalRecords());
+				cb(null,{"status":true,"total_records":20,"total_pages":"4","result":ress.slice(0,5)});
+			});
+		}
+
 		function exec(data,numb,len,cb){
 			callback(data[numb].residents,numb,function(err,result){
 				//console.log(numb);
@@ -251,7 +280,7 @@ class Planets {
 
 			
 		}
-		if(this.planetWithCharData.length>5){
+		/*if(this.planetWithCharData.length>5){
 			exec(this.planetWithCharData,this.getNumber(),5,function(ress){
 				//console.log(ress);
 				//console.log(this.getTotalRecords());
@@ -262,7 +291,7 @@ class Planets {
 			exec(this.planetWithCharData,this.getNumber(),this.planetWithCharData.length,function(ress){
 				cb(null,{"status":true,"total_records":ress.length,"result":ress});
 			});
-		}
+		}*/
 	
 
 
