@@ -268,7 +268,7 @@ class Planets {
 				//console.log(numb);
 				setTimeout(function() {
           			exec(data,numb + 1,len,cb)
-       			 }, 1000);
+       			 }, 500);
 			}
 			else{
 			//	console.log(data);
@@ -329,11 +329,11 @@ function callback(urls,i,cb){
 
 		function execRequest(idx) {
     		url = urls[idx];
-    		console.log("executing execRequest()... url:", url);
+    	//	console.log("executing execRequest()... url:", url);
     		// exec http request
     		request.get(url, function(error, response, body) {
       			if (!error && response.statusCode == 200) {
-       				 console.log("  url:", url, "statusCode:", response.statusCode);
+       				// console.log("  url:", url, "statusCode:", response.statusCode);
        				 var data=JSON.parse(response.body);
        				 names.push(data.name);
        			//	 console.log(data.name);
@@ -341,7 +341,7 @@ function callback(urls,i,cb){
         			//	console.log("  error.code:", error.code);
       			}
       			else if (body) {
-      				console.log(i+" " +body.name);
+      		//		console.log(i+" " +body.name);
       			}
       // sleep or return
       			if (idx + 1 < len) {
@@ -349,7 +349,7 @@ function callback(urls,i,cb){
         // execute the recursive function "execRequest()" after 1000 ms
         			setTimeout(function() {
           			execRequest(idx + 1)
-       			 }, 1000);
+       			 }, 500);
       			} else {
       			//	console.log("return");
         		cb(null,names);
