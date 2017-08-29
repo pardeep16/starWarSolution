@@ -447,7 +447,7 @@ function getResponseFromAPI(pattern,data,cb){
 			
 			requestCharApi(nextUrl,function(err,result){
 				if(err){
-					return null;
+					cb(err,null);
 				}
 				else{
 					getResponseFromAPI(pattern,result,cb);
@@ -455,7 +455,7 @@ function getResponseFromAPI(pattern,data,cb){
 			});
 		}
 		else{
-			return null;
+			cb("err",null);
 		}
 	}
 	
