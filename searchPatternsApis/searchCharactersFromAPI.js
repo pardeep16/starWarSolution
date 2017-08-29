@@ -110,7 +110,7 @@ class Records {
 			console.log(page);
 			
 			if(req.query.sort){
-				cb(null,{"status":true,"total_Record":50,"next":"$("+urlNext+"/characters"+"?sort="+req.query.sort+"&page="+page+")","results":this.updateData.slice((pageno*10)-9,pageno*10)});
+				cb(null,{"status":true,"total_Record":50,"next":urlNext+"/characters"+"?sort="+req.query.sort+"&page="+page,"results":this.updateData.slice((pageno*10)-9,pageno*10)});
 			
 			}
 			else{
